@@ -5,15 +5,18 @@ import { HousingLocation } from './housinglocation';
   providedIn: 'root'
 })
 export class HousingService {
+  url = 'http://localhost:3200/locations';
 
   constructor() { }
 
-  getAllHousingLocations(): HousingLocation[] {
-    return this.housingLocationList;
+  async getAllHousingLocations(): Promise<HousingLocation[]> {
+    const response = await fetch(this.url);
+    return await response.json() ?? [];
   }
   
-  getHousingLocationById(id: number): HousingLocation | undefined {
-    return this.housingLocationList.find(housingLocation => housingLocation.id === id);
+  async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
+    const response = await fetch(`${this.url}/${id}`);
+    return await response.json() ?? undefined;
   }
 
   submitApplication(firstName: string, lastName: string, email: string) {
