@@ -1,14 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { HousingLocation } from '../housinglocation';
 import { HousingService } from '../housing.service';
 
 @Component({
   selector: 'app-details',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   template: `
   <article>
     <img class="listing-photo" [src]="housingLocation?.photo"
@@ -43,11 +40,9 @@ import { HousingService } from '../housing.service';
 `,
   styleUrl: './details.component.css'
 })
-export class DetailsComponent {
+export class DetailsComponent implements OnInit{
   route: ActivatedRoute = inject(ActivatedRoute);
-  housingService = inject(HousingService);
   housingLocation: HousingLocation | undefined;
-  log: () => void;
 
   applyForm = new FormGroup({
     firstName: new FormControl(''),
@@ -55,14 +50,15 @@ export class DetailsComponent {
     email: new FormControl('')
   });
 
-  constructor() {
-    const housingLocationId = Number(this.route.snapshot.params['id']);
-    this.housingService.getHousingLocationById(housingLocationId).then((housingLocation: HousingLocation | undefined) => {
-      this.housingLocation = housingLocation;
-    });
-    this.log = () => {
-      console.log(this.housingLocation);
-    }
+  constructor(private housingService: HousingService) {  }
+
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.getLocationById(id);
+  }
+
+  getLocationById(id: number): void {
+    this.housingService.getHousingLocationById(id).subscribe(location => (this.housingLocation = location));
   }
 
   submitApplication() {
@@ -71,9 +67,5 @@ export class DetailsComponent {
       this.applyForm.value.lastName ?? '',
       this.applyForm.value.email ?? ''
     );
-  }
-
-  ngOnInit() {
-    this.log();
   }
 }

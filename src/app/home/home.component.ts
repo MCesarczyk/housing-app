@@ -1,13 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { HousingLocationComponent } from '../housing-location/housing-location.component';
+import { Component, OnInit } from '@angular/core';
 import { HousingLocation } from '../housinglocation';
 import { HousingService } from '../housing.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, HousingLocationComponent],
   template: `
   <section>
     <form>
@@ -25,17 +21,20 @@ import { HousingService } from '../housing.service';
 `,
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  readonly baseUrl = 'https://angular.io/assets/images/tutorials/faa';
-
+export class HomeComponent implements OnInit{
   housingLocationList: HousingLocation[] = [];
   filteredLocationList: HousingLocation[] = [];
-  housingService: HousingService = inject(HousingService);
 
-  constructor() {
-    this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
-      this.housingLocationList = housingLocationList;
-      this.filteredLocationList = housingLocationList;
+  constructor(private housingService: HousingService) { }
+
+  ngOnInit(): void {
+    this.getLocations();
+  }
+
+  getLocations(): void {
+    this.housingService.getAllHousingLocations().subscribe(locations => {
+      this.housingLocationList = locations;
+      this.filteredLocationList = locations;
     })
   }
 

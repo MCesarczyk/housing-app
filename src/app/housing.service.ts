@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { HousingLocation } from './housinglocation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HousingService {
-  url = 'http://localhost:3200/locations';
+  private url = 'api/locations';
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  async getAllHousingLocations(): Promise<HousingLocation[]> {
-    const response = await fetch(this.url);
-    return await response.json() ?? [];
+  getAllHousingLocations(): Observable<HousingLocation[]> {
+    return this.http.get<HousingLocation[]>(this.url);
   }
 
-  async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
-    const response = await fetch(`${this.url}/${id}`);
-    return await response.json() ?? undefined;
+  getHousingLocationById(id: number): Observable<HousingLocation | undefined> {
+    return this.http.get<HousingLocation>(`${this.url}/${id}`);
   }
 
   submitApplication(firstName: string, lastName: string, email: string) {
