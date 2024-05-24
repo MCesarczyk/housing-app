@@ -18,7 +18,7 @@ export class HousingService {
   private url = 'api/locations';
 
   private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+    return (error: Error): Observable<T> => {
       console.error(error);
       console.log(`${operation} failed: ${error.message}`);
       return of(result as T);
