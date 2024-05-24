@@ -12,7 +12,10 @@ import { HousingService } from '../housing.service';
       alt="Exterior photo of {{housingLocation?.name}}"/>
     <section class="listing-description">
       <h2 class="listing-heading">{{housingLocation?.name}}</h2>
-      <p class="listing-location">{{housingLocation?.city}}, {{housingLocation?.state}}</p>
+      <div class="listing-location-wrapper">
+        <img class="listing-location-pin" src="assets/location-pin.svg" alt="Location pin icon" aria-hidden="true">
+        <p class="listing-location">{{housingLocation?.city}}, {{housingLocation?.state}}</p>
+      </div>
     </section>
     <section class="listing-features">
       <h2 class="section-heading">About this housing location</h2>
@@ -40,7 +43,7 @@ import { HousingService } from '../housing.service';
 `,
   styleUrl: './details.component.css'
 })
-export class DetailsComponent implements OnInit{
+export class DetailsComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute);
   housingLocation: HousingLocation | undefined;
 
@@ -50,7 +53,7 @@ export class DetailsComponent implements OnInit{
     email: new FormControl('')
   });
 
-  constructor(private housingService: HousingService) {  }
+  constructor(private housingService: HousingService) { }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));

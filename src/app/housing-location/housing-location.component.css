@@ -14,10 +14,16 @@
   border-radius: 30px 30px 0 0;
 }
 .listing-location {
-  padding: 10px 20px 20px 20px;
+  padding: 10px 20px 20px 0;
 }
-.listing-location::before {
-  content: url("/assets/location-pin.svg") / "";
+
+.listing-location-pin {
+  margin-bottom: 10px;
+}
+
+.listing-location-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 section.listing a {

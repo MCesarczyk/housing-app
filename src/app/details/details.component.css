@@ -12,8 +12,15 @@
   margin-bottom: 15px;
 }
 
-.listing-location::before {
-  content: url('/assets/location-pin.svg') / '';
+.listing-location-pin {
+  transform: scale(1.5);
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.listing-location-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .listing-location {
