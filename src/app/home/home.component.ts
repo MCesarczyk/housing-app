@@ -1,31 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { HousingLocation } from '../housinglocation';
-import { HousingService } from '../housing.service';
+import { Component, OnInit } from "@angular/core";
+import { HousingLocation } from "../housinglocation";
+import { HousingService } from "../housing.service";
 
 @Component({
-  selector: 'app-home',
+  selector: "app-home",
   template: `
-  <section>
-    <form>
-      <input type="text" placeholder="Filter by city" #filter>
-      <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
-    </form>
-  </section>
-  <section class="results">
-    <app-housing-location
-      *ngFor="let housingLocation of filteredLocationList"
-      [housingLocation]="housingLocation"
-    >
-    </app-housing-location>
-  </section>
-`,
-  styleUrl: './home.component.css'
+    <section>
+      <form>
+        <input type="text" placeholder="Filter by city" #filter />
+        <button
+          class="primary"
+          type="button"
+          (click)="filterResults(filter.value)"
+        >
+          Search
+        </button>
+      </form>
+    </section>
+    <section class="results">
+      <app-housing-location
+        *ngFor="let housingLocation of filteredLocationList"
+        [housingLocation]="housingLocation"
+      >
+      </app-housing-location>
+    </section>
+  `,
+  styleUrl: "./home.component.css"
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   housingLocationList: HousingLocation[] = [];
   filteredLocationList: HousingLocation[] = [];
 
-  constructor(private housingService: HousingService) { }
+  constructor(private housingService: HousingService) {}
 
   ngOnInit(): void {
     this.getLocations();
@@ -35,7 +41,7 @@ export class HomeComponent implements OnInit{
     this.housingService.getAllHousingLocations().subscribe(locations => {
       this.housingLocationList = locations;
       this.filteredLocationList = locations;
-    })
+    });
   }
 
   filterResults(text: string) {
@@ -45,7 +51,8 @@ export class HomeComponent implements OnInit{
     }
 
     this.filteredLocationList = this.housingLocationList.filter(
-      housingLocation => housingLocation?.city.toLowerCase().includes(text.toLowerCase())
+      housingLocation =>
+        housingLocation?.city.toLowerCase().includes(text.toLowerCase())
     );
   }
 }
